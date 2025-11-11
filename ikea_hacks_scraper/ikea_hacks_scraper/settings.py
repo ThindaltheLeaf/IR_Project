@@ -85,3 +85,29 @@ DOWNLOAD_DELAY = 1
 
 # Set settings whose default value is deprecated to a future-proof value
 FEED_EXPORT_ENCODING = "utf-8"
+
+# Politeness settings
+DOWNLOAD_DELAY = 1
+CONCURRENT_REQUESTS = 8
+CONCURRENT_REQUESTS_PER_DOMAIN = 4
+
+# User agent
+USER_AGENT = 'IkeaHacksScraper (Educational IR Project)'
+
+# Auto-throttle settings (automatically adjusts delays)
+AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_START_DELAY = 1
+AUTOTHROTTLE_MAX_DELAY = 3
+
+# Export to JSON
+FEEDS = {
+    'data/ikea_hacks.json': {
+        'format': 'json',
+        'encoding': 'utf8',
+        'indent': 4,
+        'overwrite': True,
+    },
+}
+
+# Log level (INFO shows progress, DEBUG shows everything)
+LOG_LEVEL = 'INFO'

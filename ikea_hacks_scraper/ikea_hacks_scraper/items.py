@@ -5,8 +5,14 @@
 
 import scrapy
 
-
-class IkeaHacksScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class IkeaHackItem(scrapy.Item):
+    """Data structure for IKEA hack articles"""
+    title = scrapy.Field()
+    content = scrapy.Field()
+    author = scrapy.Field()
+    date = scrapy.Field()
+    url = scrapy.Field()
+    categories = scrapy.Field()
+    tags = scrapy.Field()
+    image_url = scrapy.Field()
+    excerpt = scrapy.Field()
