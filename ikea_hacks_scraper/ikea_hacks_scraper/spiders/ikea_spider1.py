@@ -13,8 +13,14 @@ class IkeaSpider(scrapy.Spider):
     custom_settings = {
         'DOWNLOAD_DELAY': 1,  # Be polite - 1 second between requests
     }
-    
+    page_count = 0
+    max_pages = 5  # For testing 
+
     def parse(self, response):
+        if self.page_count >= self.max_pages:
+            return
+        self.page_count += 1
+        
         """
         Parse the category listing page
         Extract individual hack article links
