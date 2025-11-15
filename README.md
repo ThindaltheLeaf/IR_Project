@@ -27,3 +27,6 @@ scrapy crawl loveproperty -o data/loveproperty_hacks.json -s CLOSESPIDER_ITEMCOU
 - ikea_hacks.json = 203 items
 - tosize_hacks.json = 20 items
 - loveproperty_hacks.json = 42 items
+
+# Solr
+- The files that deal with Solr have been AI generated to check for Solr funcioning and well-behavior of the indexing and retrieval system
