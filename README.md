@@ -26,4 +26,4 @@ scrapy crawl loveproperty -o data/loveproperty_hacks.json -s CLOSESPIDER_ITEMCOU
 # Total items in data repo:
 - ikea_hacks.json = 203 items
 - tosize_hacks.json = 20 items
-- loveproperty_hacks.json = 100 items
+- loveproperty_hacks.json = 42 items
