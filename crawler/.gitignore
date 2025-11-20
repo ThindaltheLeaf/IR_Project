@@ -1,0 +1,36 @@
+# --- Python / Scrapy ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Virtualenv in this folder
+.venv/
+
+# Scrapy internals
+.scrapy/
+
+# Scrapy outputs / local tests
+*.log
+*.jl
+*.csv
+*_test.json
+feeds/
+
+# Caches / tooling
+.pytest_cache/
+.mypy_cache/
+
+# Environment / secrets
+.env
+
+# OS / editor junk
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
