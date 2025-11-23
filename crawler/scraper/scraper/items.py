@@ -17,4 +17,4 @@ class IkeaHackItem(scrapy.Item):
     tags = scrapy.Field()
     image_url = scrapy.Field()
     excerpt = scrapy.Field()
-    source = scrapy.Field()   # NEW: "ikea", "loveproperty", "tosize", "reddit"
+    source = scrapy.Field() 

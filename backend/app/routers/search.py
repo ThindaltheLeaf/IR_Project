@@ -1,28 +1,57 @@
-# app/routers/search.py
-from fastapi import APIRouter, Query
-from typing import Optional
-from app.models import SearchResult, Hack
+from fastapi import APIRouter, Depends, Query
+from typing import List
+
+from app.models import Hack, SearchResult
+from app.services import mongo
 
 router = APIRouter(prefix="/api/search", tags=["search"])
 
+
 @router.get("/", response_model=SearchResult)
-def search(
-    q: Optional[str] = Query("", description="Search query (will use Solr later)"),
-    page: int = 1,
-    page_size: int = 10,
+def search_hacks(
+    query: str = Query(..., description="Search term"),
+    limit: int = Query(10, ge=1, le=50),
+    db = Depends(mongo.get_db),
 ):
-    # temporary dummy implementation
-    dummy = Hack(
-        id="dummy",
-        source="dummy",
-        title=f"Example result for '{q}'",
-        content="Search will be powered by Solr later.",
-        author=None,
-        date=None,
-        url=None,
-        categories=[],
-        tags=[],
-        image_url=None,
-        excerpt=None,
-    )
-    return SearchResult(total=1, hits=[dummy])
+    """
+    Search API to query the hacks_all collection using MongoDB Atlas Search.
+    """
+    index_name = mongo.MONGO_SEARCH_INDEX 
+    pipeline = [
+        {
+            "$search": {
+                "index": index_name,
+                "text": {
+                    "query": query,
+                    "path": {
+                        "wildcard": "*"  
+                    }
+                }
+            }
+        },
+        {
+            "$limit": limit
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "id": {"$toString": "$_id"}, 
+                "source": 1,
+                "url": 1,
+                "author": 1,
+                "categories": 1,
+                "content": 1,
+                "date": 1,
+                "excerpt": 1,
+                "image_url": 1,
+                "tags": 1,
+                "title": 1,
+                "score": {"$meta": "searchScore"},
+            }
+        }
+    ]
+
+    docs = list(db["hacks_all"].aggregate(pipeline))
+    hits: List[Hack] = [Hack(**doc) for doc in docs]
+   
+    return SearchResult(total=len(hits), hits=hits)

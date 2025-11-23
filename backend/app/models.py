@@ -1,19 +1,20 @@
 # app/models.py
-from pydantic import BaseModel, HttpUrl
 from typing import List, Optional
+from pydantic import BaseModel, HttpUrl
 
 class Hack(BaseModel):
-    id: str                      # Mongo _id as string
-    source: Optional[str] = None # which site / spider
+    id: Optional[str] = None
+    source: Optional[str] = None
     title: str
     content: Optional[str] = None
     author: Optional[str] = None
-    date: Optional[str] = None   # could be refined later to datetime
+    date: Optional[str] = None
     url: Optional[HttpUrl] = None
     categories: List[str] = []
     tags: List[str] = []
     image_url: Optional[HttpUrl] = None
     excerpt: Optional[str] = None
+    score: Optional[float] = None
 
 class SearchResult(BaseModel):
     total: int
