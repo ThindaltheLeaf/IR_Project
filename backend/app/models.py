@@ -17,5 +17,8 @@ class Hack(BaseModel):
     score: Optional[float] = None
 
 class SearchResult(BaseModel):
-    total: int
+    total: int          
+    page: int            
+    page_size: int      
+    total_pages: int     
     hits: List[Hack]
