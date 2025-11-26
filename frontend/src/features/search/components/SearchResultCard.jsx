@@ -1,11 +1,16 @@
-// src/features/search/components/SearchResultCard.jsx
 import { Paper, Box, Typography, Link } from "@mui/material";
 
+/**
+ * Highlight occurrences of `query` inside `text` using <mark>.
+ * Case-insensitive, phrase-based.
+ */
 function highlightText(text, query) {
   if (!text || !query) return text;
+
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const regex = new RegExp(`(${escaped})`, "gi");
   const parts = text.split(regex);
+
   return parts.map((part, idx) =>
     idx % 2 === 1 ? (
       <mark key={idx} style={{ backgroundColor: "#fff59d" }}>
@@ -17,15 +22,58 @@ function highlightText(text, query) {
   );
 }
 
-function buildSnippet(result) {
-  const base =
-    result.excerpt || result.content || "No description available yet.";
-  if (base.length <= 300) return base;
-  return base.slice(0, 300) + "…";
+/**
+ * Build a snippet centered around the first occurrence of the query
+ * - If query is present, cut a window around it, add leading/trailing "..." if needed.
+ * - If not present, fall back to the beginning of the text.
+ */
+function buildSnippet(result, query) {
+  const fullText =
+    result.content || result.excerpt || "No description available yet.";
+
+  const SNIPPET_LENGTH = 260;
+
+  if (!fullText) return "";
+
+  if (!query) {
+    return fullText.length > SNIPPET_LENGTH
+      ? fullText.slice(0, SNIPPET_LENGTH) + "…"
+      : fullText;
+  }
+
+  const lowerText = fullText.toLowerCase();
+  const lowerQuery = query.toLowerCase();
+  const idx = lowerText.indexOf(lowerQuery);
+
+  if (idx === -1) {
+    return fullText.length > SNIPPET_LENGTH
+      ? fullText.slice(0, SNIPPET_LENGTH) + "…"
+      : fullText;
+  }
+
+  const CONTEXT_BEFORE = 80;
+  let start = Math.max(idx - CONTEXT_BEFORE, 0);
+  let end = start + SNIPPET_LENGTH;
+
+  if (end > fullText.length) {
+    end = fullText.length;
+    start = Math.max(end - SNIPPET_LENGTH, 0);
+  }
+
+  let snippet = fullText.slice(start, end).trim();
+
+  if (start > 0) {
+    snippet = "…" + snippet;
+  }
+  if (end < fullText.length) {
+    snippet = snippet + "…";
+  }
+
+  return snippet;
 }
 
 function SearchResultCard({ result, query }) {
-  const snippet = buildSnippet(result);
+  const snippet = buildSnippet(result, query);
 
   return (
     <Paper
@@ -37,11 +85,13 @@ function SearchResultCard({ result, query }) {
       }}
     >
       <Box>
+        {/* URL + source line */}
         <Typography variant="caption" color="text.secondary">
           {result.source && `${result.source} · `}
           {result.url}
         </Typography>
 
+        {/* Title */}
         <Typography
           variant="h6"
           component={Link}
@@ -54,6 +104,7 @@ function SearchResultCard({ result, query }) {
           {highlightText(result.title || "Untitled hack", query)}
         </Typography>
 
+        {/* Snippet (2–3 lines, clamped) */}
         <Typography
           variant="body2"
           color="text.secondary"
@@ -68,9 +119,10 @@ function SearchResultCard({ result, query }) {
           {highlightText(snippet, query)}
         </Typography>
 
+        {/* Meta line */}
         <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5 }}>
           {result.author && `${result.author} · `}
-          {result.date}
+          {result.date ? result.date.toString().substring(0, 10) : ""}
         </Typography>
       </Box>
     </Paper>

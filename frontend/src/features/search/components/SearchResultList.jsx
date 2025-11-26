@@ -1,15 +1,7 @@
-// src/features/search/components/SearchResultList.jsx
 import { Stack, Typography } from "@mui/material";
 import SearchResultCard from "./SearchResultCard.jsx";
 
-function SearchResultList({ results, query, loading, error }) {
-  if (error) {
-    return (
-      <Typography color="error" variant="body2">
-        {error}
-      </Typography>
-    );
-  }
+function SearchResultList({ results, query, loading }) {
 
   if (!loading && results.length === 0 && query) {
     return (

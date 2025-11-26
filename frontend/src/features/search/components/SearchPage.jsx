@@ -2,8 +2,9 @@ import { Container, Box, Typography } from "@mui/material";
 import SearchBar from "./SearchBar.jsx";
 import SearchResultList from "./SearchResultList.jsx";
 import PaginationBar from "./PaginationBar.jsx";
-import StatusLine  from "./StatusLine.jsx";
+import StatusLine from "./StatusLine.jsx";
 import { useSearch } from "../hooks/useSearch.js";
+import ErrorBanner from "../../../shared/components/ErrorBanner.jsx";
 
 function SearchPage() {
   const {
@@ -20,7 +21,6 @@ function SearchPage() {
   } = useSearch(10);
 
   const handlePageChange = (_event, newPage) => {
-    // Ask the hook to run the search for the new page
     search(newPage);
   };
 
@@ -31,7 +31,8 @@ function SearchPage() {
           IKEA Hacks Search
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
-          Search across IKEA hacks from multiple websites and <a href="https://www.reddit.com/r/ikeahacks/">r/ikeahacks</a>
+          Search across IKEA hacks from multiple websites and{" "}
+          <a href="https://www.reddit.com/r/ikeahacks/">r/ikeahacks</a>
         </Typography>
       </Box>
 
@@ -42,6 +43,8 @@ function SearchPage() {
         loading={loading}
       />
 
+      <ErrorBanner error={error} />
+
       <StatusLine
         page={page}
         total={total}
@@ -51,7 +54,7 @@ function SearchPage() {
         loading={loading}
         results={results}
       />
- 
+
       <SearchResultList
         results={results}
         query={query}
