@@ -12,7 +12,7 @@ class RedditIkeaHacksSpider(scrapy.Spider):
     allowed_domains = ["www.reddit.com", "reddit.com"]
     subreddit = "ikeahacks"
 
-    max_posts = 500  # hard cap
+    max_posts = 2000  # hard cap
 
     # Per-spider settings: ignore robots.txt for this spider only, and be gentle
     custom_settings = {
@@ -99,20 +99,12 @@ class RedditIkeaHacksSpider(scrapy.Spider):
                 excerpt = item["title"]
             item["excerpt"] = excerpt
 
-            score = item.get("score", 0) 
-            removed = item.get("removed_by_category")
-
-            if item["title"] and removed is None and score >= 1:
+            if item["title"]:
                 self.post_count += 1
                 self.logger.info(
-                    f"[reddit] - {item['title'][:60]} (total={self.post_count})"
+                    f"[reddit] - {item['title'][:60]}"
                 )
                 yield item
-            else:
-                self.logger.info(
-                    f"[reddit] - Skipping post "
-                    f"(title={bool(item.get('title'))}, removed_by_category={removed}, score={score})"
-                )    
 
         # Pagination with "after" cursor
         after = data.get("data", {}).get("after")

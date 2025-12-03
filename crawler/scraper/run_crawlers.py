@@ -20,7 +20,6 @@ if __name__ == "__main__":
 
     process.crawl(IkeaSpider)
     process.crawl(LovePropertySpider)
-    process.crawl(TosizeSpider)
     process.crawl(RedditIkeaHacksSpider)
 
     process.start()
