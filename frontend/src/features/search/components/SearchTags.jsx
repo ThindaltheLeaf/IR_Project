@@ -35,7 +35,6 @@ function SearchTags({ categories, onCategorySearch }) {
       </AccordionSummary>
       <AccordionDetails>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-          {console.log(categories)}
           {categories.map((category) => (
             <Button
               key={category}
