@@ -3,7 +3,6 @@ import { getHacksByCategory } from "../api/getHacksByCategory";
 
 export function useHacksByCategory(categoryName, options = {}) {
   const { pageSize = 10, autoFetch = false } = options;
-
   const [result, setResult] = useState({
     hits: [],
     total: 0,

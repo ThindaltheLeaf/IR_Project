@@ -10,11 +10,16 @@ import {
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-function SearchTags({ categories }) {
+function SearchTags({ categories, onCategorySearch }) {
   const [expanded, setExpanded] = useState(false);
 
   const handleChange = (_event, isExpanded) => {
     setExpanded(isExpanded);
+  };
+
+  const handleCategoryClick = (category) => {
+    const searchQuery = `${category}`;
+    onCategorySearch(searchQuery);
   };
 
   return (
@@ -30,18 +35,25 @@ function SearchTags({ categories }) {
       </AccordionSummary>
       <AccordionDetails>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          {console.log(categories)}
           {categories.map((category) => (
             <Button
               key={category}
               size="small"
               variant="outlined"
               disableElevation
+              onClick={() => handleCategoryClick(category)}
               sx={{
                 borderRadius: "999px",
                 textTransform: "uppercase",
                 fontWeight: 500,
                 letterSpacing: 0.5,
                 paddingX: 1.5,
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: "primary.main",
+                  color: "white",
+                },
               }}
             >
               {category}

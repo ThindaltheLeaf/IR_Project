@@ -1,28 +1,79 @@
-import { Container, Box, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Container, Box, Typography, Chip } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import SearchBar from "./SearchBar.jsx";
 import SearchResultList from "./SearchResultList.jsx";
 import PaginationBar from "./PaginationBar.jsx";
 import StatusLine from "./StatusLine.jsx";
+import TopCategoriesSection from "./TopCategoriesSection.jsx";
 import { useSearch } from "../hooks/useSearch.js";
+import { useHacksByCategory } from "../hooks/useHacksByCategory.js";
 import ErrorBanner from "../../../shared/components/ErrorBanner.jsx";
 
 function SearchPage() {
-  const {
-    query,
-    setQuery,
-    results,
-    total,
-    page,
-    pageSize,
-    totalPages,
-    loading,
-    error,
-    search,
-  } = useSearch(10);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  // Text search hook
+  const textSearch = useSearch(10);
+
+  // Category search hook - only active when category is selected
+  const categorySearch = useHacksByCategory(selectedCategory, {
+    pageSize: 10,
+    autoFetch: false,
+  });
+
+  // Determine active mode
+  const isCategoryMode = !!selectedCategory;
+
+  // Use the appropriate search state
+  // Note: textSearch returns 'results', categorySearch returns 'hits'
+  const results = isCategoryMode ? categorySearch.hits : textSearch.results;
+  const total = isCategoryMode ? categorySearch.total : textSearch.total;
+  const page = isCategoryMode ? categorySearch.page : textSearch.page;
+  const pageSize = isCategoryMode
+    ? categorySearch.pageSize
+    : textSearch.pageSize;
+  const totalPages = isCategoryMode
+    ? categorySearch.totalPages
+    : textSearch.totalPages;
+  const loading = isCategoryMode ? categorySearch.loading : textSearch.loading;
+  const error = isCategoryMode ? categorySearch.error : textSearch.error;
+
+  // Fetch category hacks when category is selected
+  useEffect(() => {
+    if (selectedCategory) {
+      categorySearch.fetchHacks(1, true);
+    }
+  }, [selectedCategory]);
 
   const handlePageChange = (_event, newPage) => {
-    search(newPage);
+    if (isCategoryMode) {
+      categorySearch.goToPage(newPage);
+    } else {
+      textSearch.search(newPage);
+    }
   };
+
+  const handleCategorySearch = (categoryName) => {
+    // Clear text search and switch to category mode
+    textSearch.setQuery("");
+    setSelectedCategory(categoryName);
+  };
+
+  const handleTextSearch = () => {
+    // Clear category and do text search
+    setSelectedCategory(null);
+    textSearch.search(1);
+  };
+
+  const handleClearCategory = () => {
+    setSelectedCategory(null);
+  };
+
+  const showCategories =
+    !isCategoryMode &&
+    !textSearch.query.trim() &&
+    textSearch.results.length === 0;
 
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>
@@ -53,13 +104,31 @@ function SearchPage() {
       </Box>
 
       <SearchBar
-        query={query}
-        onQueryChange={setQuery}
-        onSubmit={() => search(1)}
-        loading={loading}
+        query={textSearch.query}
+        onQueryChange={textSearch.setQuery}
+        onSubmit={handleTextSearch}
+        loading={!isCategoryMode && loading}
+        disabled={isCategoryMode}
       />
 
+      {isCategoryMode && (
+        <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
+          <Chip
+            label={`Category: ${selectedCategory}`}
+            onDelete={handleClearCategory}
+            deleteIcon={<CloseIcon />}
+            color="primary"
+            variant="outlined"
+          />
+        </Box>
+      )}
+
       <ErrorBanner error={error} />
+
+      <TopCategoriesSection
+        show={showCategories}
+        onCategorySearch={handleCategorySearch}
+      />
 
       <StatusLine
         page={page}
@@ -73,9 +142,10 @@ function SearchPage() {
 
       <SearchResultList
         results={results}
-        query={query}
+        query={isCategoryMode ? "" : textSearch.query}
         loading={loading}
         error={error}
+        onCategorySearch={handleCategorySearch}
       />
 
       <PaginationBar

@@ -1,8 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import SearchResultCard from "./SearchResultCard.jsx";
 
-function SearchResultList({ results, query, loading }) {
-
+function SearchResultList({ results, query, loading, onCategorySearch }) {
   if (!loading && results.length === 0 && query) {
     return (
       <Typography variant="body2" color="text.secondary">
@@ -19,6 +18,7 @@ function SearchResultList({ results, query, loading }) {
             key={res.id || res.url}
             result={res}
             query={query}
+            onCategorySearch={onCategorySearch}
           />
         ))}
       </Stack>

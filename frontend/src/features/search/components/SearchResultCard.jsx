@@ -63,7 +63,7 @@ function buildSnippet(result, query) {
   return snippet;
 }
 
-function SearchResultCard({ result, query }) {
+function SearchResultCard({ result, query, onCategorySearch }) {
   const snippet = buildSnippet(result, query);
   const dateStr =
     typeof result.date === "string"
@@ -71,6 +71,12 @@ function SearchResultCard({ result, query }) {
       : result.date
       ? String(result.date).slice(0, 10)
       : "";
+
+  const handleCategoryClick = (searchQuery) => {
+    if (onCategorySearch) {
+      onCategorySearch(searchQuery);
+    }
+  };
 
   return (
     <Paper
@@ -100,7 +106,7 @@ function SearchResultCard({ result, query }) {
         >
           {highlightText(result.title || "Untitled hack", query)}
         </Typography>
-        {/* {console.log(result)} */}
+
         {/* Snippet */}
         <Typography
           variant="body2"
@@ -123,7 +129,10 @@ function SearchResultCard({ result, query }) {
         </Typography>
 
         {/* Search query tags */}
-        <SearchTags categories={result.categories} />
+        <SearchTags
+          categories={result.categories}
+          onCategorySearch={handleCategoryClick}
+        />
 
         {/* Similar hacks accordion */}
         <SimilarHacksAccordion hackId={result.id} />
