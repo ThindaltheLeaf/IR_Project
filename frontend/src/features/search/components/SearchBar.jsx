@@ -1,4 +1,3 @@
-// src/features/search/components/SearchBar.jsx
 import {
   Box,
   TextField,
@@ -22,14 +21,16 @@ function SearchBar({ query, onQueryChange, onSubmit, loading }) {
         placeholder="Search IKEA hacks..."
         value={query}
         onChange={(e) => onQueryChange(e.target.value)}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton type="submit" edge="end" aria-label="search">
-                {loading ? <CircularProgress size={22} /> : <SearchIcon />}
-              </IconButton>
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton type="submit" edge="end" aria-label="search">
+                  {loading ? <CircularProgress size={22} /> : <SearchIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
       />
     </Box>

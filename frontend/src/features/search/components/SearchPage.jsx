@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Box, Typography, Chip, Link } from "@mui/material";
+import { Container, Box, Chip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchBar from "./SearchBar.jsx";
 import SearchResultList from "./SearchResultList.jsx";
@@ -8,8 +8,7 @@ import StatusLine from "./StatusLine.jsx";
 import TopCategoriesSection from "./TopCategoriesSection.jsx";
 import { useSearch } from "../hooks/useSearch.js";
 import { useHacksByCategory } from "../hooks/useHacksByCategory.js";
-import ErrorBanner from "../../../shared/components/ErrorBanner.jsx";
-import DefinitionDialog from "../../../shared/components/DefinitionDialog.jsx";
+import { DefinitionDialog, ErrorBanner } from "../../../shared/components";
 
 function SearchPage({ definitionOpen, setDefinitionOpen }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
