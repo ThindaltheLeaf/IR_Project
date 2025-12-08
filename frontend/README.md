@@ -1,39 +1,120 @@
-# Material UI - Vite.js example
+# IKEA Hacks Frontend
 
-## How to use
+React-based frontend for searching and browsing IKEA hack projects.
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
+## Features
 
-<!-- #target-branch-reference -->
+- Material-UI components with custom theming
+- Real-time search with pagination
+- Category browsing
+- Similar hacks discovery
+
+## Setup
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
-curl https://codeload.github.com/mui/material-ui/tar.gz/master | tar -xz --strip=2 material-ui-master/examples/material-ui-vite
-cd material-ui-vite
-```
-
-Install it and run:
-
-```bash
+cd frontend
 npm install
-npm run dev
+````
+
+### Environment Variables
+
+Create a `.env` file:
+
+```env
+VITE_API_BASE_URL=backend_port
 ```
 
-or:
+## Running
 
-<!-- #target-branch-reference -->
+```bash
+# Development server
+npm run dev
 
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/master/examples/material-ui-vite)
+# Build for production
+npm run build
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/sandbox/github/mui/material-ui/tree/master/examples/material-ui-vite)
+# Preview production build
+npm run serve
+```
 
-## The idea behind the example
+Dev server runs on `http://localhost:5173`
 
-This example uses [Vite.js](https://github.com/vitejs/vite).
-It includes `@mui/material` and its peer dependencies, including [Emotion](https://emotion.sh/docs/introduction), the default style engine in Material UI.
+## Project Structure
 
-## What's next?
+```
+frontend/
+├── src/
+│   ├── app/                    # Main app component
+│   ├── features/
+│   │   └── search/             # Search feature module
+│   │       ├── api/            # API client functions
+│   │       ├── components/     # React components
+│   │       └── hooks/          # Custom React hooks
+│   ├── lib/
+│   │   └── apiClient.js        # Base API client
+│   ├── shared/
+│   │   └── components/         # Shared components
+│   ├── main.jsx                # App entry point
+│   └── theme.js                # MUI theme configuration
+├── public/                      # Static assets
+├── index.html
+├── package.json
+└── vite.config.js
+```
 
-<!-- #host-reference -->
+## Key Components
 
-You now have a working example project.
-You can head back to the documentation and continue by browsing the [templates](https://mui.com/material-ui/getting-started/templates/) section.
+### Search Components
+
+- SearchPage.jsx - Main search page with state management
+- SearchBar.jsx - Search input with loading state
+- SearchResultList.jsx - List of search results
+- SearchResultCard.jsx - Individual result card with highlighting
+- TopCategoriesSection.jsx - Top 8 categories display
+- PaginationBar.jsx - Page navigation
+- SimilarHacksAccordion.jsx - Similar hacks for each result
+- SearchTags.jsx - Category tags for each result
+
+### Shared Components
+
+- Header.jsx - App header with theme toggle
+- Footer.jsx - App footer
+- DefinitionDialog.jsx - IKEA hacks explanation dialog
+- ErrorBanner.jsx - Just for error display
+
+## Custom Hooks
+
+- `useSearch` - Text search functionality
+- `useHacksByCategory` - Category-based search
+- `useSimilar` - Similar hacks discovery
+- `useTopCategories` - Popular categories
+
+## API Integration
+
+All API calls go through `apiClient.js` which handles:
+
+- Base URL configuration
+- Request/response formatting
+- Error handling
+
+## Styling
+
+Uses Material-UI with custom theme defined in `theme.js`:
+
+- Noto Sans font family
+- Custom color palette
+- Dark/light mode support
+- Persistent theme preference (localStorage)
+
+## Building for Production
+
+```bash
+npm run build
+```
