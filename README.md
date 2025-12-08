@@ -1,10 +1,12 @@
 # IKEA Hacks Search Engine
 
-A full-stack search engine for discovering and exploring IKEA hacks from multiple sources including dedicated websites and Reddit's r/ikeahacks community.
+A full-stack search engine for the project of the course "Information Retrieval" of Università della Svizzera Italiana
+
+The goal was discovering and exploring IKEA hacks from multiple sources including dedicated websites and Reddit's r/ikeahacks community.
 
 ## Project Structure
 
-```
+```bash
 ├── frontend/          # React + Vite frontend application
 ├── backend/           # FastAPI backend with MongoDB
 ├── crawler/           # Scrapy web crawlers
@@ -109,7 +111,6 @@ cd backend
 python -m app.tokenization.cli --limit 100
 ```
 
-
 ## Authors
 
 - Sacco Francesc Jordi
@@ -122,8 +123,7 @@ Academic project for Information Retrieval 2025 course.
 ---
 
 For detailed setup and usage instructions, please refer to the individual component READMEs:
-- [Frontend Setup →](frontend/README.md)
-- [Backend Setup →](backend/README.md)
-- [Crawler Setup →](crawler/README.md)
 
-
+- [Frontend Setup](frontend/README.md)
+- [Backend Setup](backend/README.md)
+- [Crawler Setup](crawler/README.md)
