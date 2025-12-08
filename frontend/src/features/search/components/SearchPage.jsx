@@ -102,7 +102,6 @@ function SearchPage() {
         <Typography variant="subtitle1" color="text.secondary">
           Search across{" "}
           <Link
-            component="button"
             variant="subtitle1"
             onClick={() => setDefinitionOpen(true)}
             sx={{
